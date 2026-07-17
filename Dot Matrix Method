@@ -1,0 +1,82 @@
+# ==========================================
+# Dot Matrix Algorithm
+# DNA Sequence Alignment Toolkit
+# ==========================================
+
+
+# Print Dot Matrix
+def print_dot_matrix(matrix, seq1, seq2):
+
+    print("   ", end=" ")
+
+    for nucleotide in seq2:
+        print(nucleotide, end=" ")
+
+    print()
+
+    for i in range(len(seq1)):
+
+        print(seq1[i], end="  ")
+
+        for j in range(len(seq2)):
+            print(matrix[i][j], end=" ")
+
+        print()
+
+
+# Create Dot Matrix
+def create_dot_matrix(seq1, seq2):
+
+    matrix = []
+
+    for i in seq1:
+
+        row = []
+
+        for j in seq2:
+
+            if i == j:
+                row.append("*")
+            else:
+                row.append(" ")
+
+        matrix.append(row)      # ← Row complete hone ke baad add karo
+
+    return matrix
+
+
+# Validate DNA Sequence
+def validate_Seq(seq):
+
+    valid = {'A', 'T', 'G', 'C'}
+
+    for i in seq:
+
+        if i not in valid:
+            return False
+
+    return True
+
+
+# Main Function
+def main():
+
+    seq1 = input("Enter Sequence 1: ").upper()
+    seq2 = input("Enter Sequence 2: ").upper()
+
+    if not validate_Seq(seq1):
+        print("Invalid Sequence 1")
+        return
+
+    if not validate_Seq(seq2):
+        print("Invalid Sequence 2")
+        return
+
+    matrix = create_dot_matrix(seq1, seq2)
+
+    print("\nDot Matrix:\n")
+    print_dot_matrix(matrix, seq1, seq2)
+
+
+if __name__ == "__main__":
+    main()
