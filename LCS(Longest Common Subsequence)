@@ -1,0 +1,117 @@
+def trace_back(matrix, seq1, seq2):
+
+    lcs = []
+
+    i = len(seq1)
+    j = len(seq2)
+
+    while i > 0 and j > 0:
+
+        if seq1[i - 1] == seq2[j - 1]:
+
+            lcs.append(seq1[i - 1])
+
+            i -= 1
+            j -= 1
+
+        else:
+
+            if matrix[i - 1][j] > matrix[i][j - 1]:
+                i -= 1
+            else:
+                j -= 1
+
+    lcs.reverse()
+
+    return "".join(lcs)
+
+
+def fill_matrix(matrix, seq1, seq2):
+
+    for i in range(1, len(seq1) + 1):
+
+        for j in range(1, len(seq2) + 1):
+
+            if seq1[i - 1] == seq2[j - 1]:
+
+                matrix[i][j] = 1 + matrix[i - 1][j - 1]
+
+            else:
+
+                matrix[i][j] = max(matrix[i - 1][j],
+                                   matrix[i][j - 1])
+
+    return matrix
+
+
+def matrix_initialize(seq1, seq2):
+
+    matrix = []
+
+    for i in range(len(seq1) + 1):
+
+        row = []
+
+        for j in range(len(seq2) + 1):
+
+            row.append(0)
+
+        matrix.append(row)
+
+    return matrix
+
+
+def print_matrix(matrix):
+
+    print("\nDynamic Programming Matrix:\n")
+
+    for row in matrix:
+
+        print(row)
+
+
+def validate_Seq(seq):
+
+    valid = {'A', 'T', 'G', 'C'}
+
+    for i in seq:
+
+        if i not in valid:
+            return False
+
+    return True
+
+
+def get_input():
+
+    seq1 = input("Enter Sequence 1: ").upper()
+    seq2 = input("Enter Sequence 2: ").upper()
+
+    if not validate_Seq(seq1):
+
+        print("Invalid Sequence 1")
+        return
+
+    if not validate_Seq(seq2):
+
+        print("Invalid Sequence 2")
+        return
+
+    matrix = matrix_initialize(seq1, seq2)
+
+    matrix = fill_matrix(matrix, seq1, seq2)
+
+    print_matrix(matrix)
+
+    lcs = trace_back(matrix, seq1, seq2)
+
+    print("\nLongest Common Subsequence :", lcs)
+    print("Length :", len(lcs))
+
+
+def main():
+
+    get_input()
+
+
+main()
