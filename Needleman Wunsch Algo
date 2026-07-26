@@ -1,0 +1,225 @@
+"""
+Needleman-Wunsch Algorithm
+Global Sequence Alignment
+
+Scoring:
+Match = +1
+Mismatch = -1
+Gap = -2
+"""
+
+# ==========================
+# Constants
+# ==========================
+
+MATCH = 1
+MISMATCH = -1
+GAP = -2
+
+
+# ==========================
+# Validation Functions
+# ==========================
+
+def validate_seq(seq):
+
+    valid = {"A", "T", "C", "G"}
+
+    for nucleotide in seq:
+        if nucleotide not in valid:
+            return False
+
+    return True
+
+
+def get_input():
+
+    seq1 = input("Enter Sequence 1: ").upper()
+    seq2 = input("Enter Sequence 2: ").upper()
+
+    if not validate_seq(seq1):
+        print("Invalid Sequence 1")
+        return None, None
+
+    if not validate_seq(seq2):
+        print("Invalid Sequence 2")
+        return None, None
+
+    return seq1, seq2
+
+
+# ==========================
+# Matrix Functions
+# ==========================
+
+def matrix_initialize(seq1, seq2):
+
+    matrix = []
+
+    for i in range(len(seq1) + 1):
+
+        row = []
+
+        for j in range(len(seq2) + 1):
+
+            if i == 0:
+                row.append(j * GAP)
+
+            elif j == 0:
+                row.append(i * GAP)
+
+            else:
+                row.append(0)
+
+        matrix.append(row)
+
+    return matrix
+
+
+def fill_matrix(matrix, seq1, seq2):
+
+    for i in range(1, len(seq1) + 1):
+
+        for j in range(1, len(seq2) + 1):
+
+            if seq1[i - 1] == seq2[j - 1]:
+                diagonal = matrix[i - 1][j - 1] + MATCH
+            else:
+                diagonal = matrix[i - 1][j - 1] + MISMATCH
+
+            up = matrix[i - 1][j] + GAP
+            left = matrix[i][j - 1] + GAP
+
+            matrix[i][j] = max(diagonal, up, left)
+
+    return matrix
+
+
+# ==========================
+# Traceback Function
+# ==========================
+
+def trace_back(matrix, seq1, seq2):
+
+    alignment_1 = []
+    alignment_2 = []
+
+    i = len(seq1)
+    j = len(seq2)
+
+    while i > 0 and j > 0:
+
+        if (
+            seq1[i - 1] == seq2[j - 1]
+            and matrix[i][j] == matrix[i - 1][j - 1] + MATCH
+        ):
+
+            alignment_1.append(seq1[i - 1])
+            alignment_2.append(seq2[j - 1])
+
+            i -= 1
+            j -= 1
+
+        elif (
+            seq1[i - 1] != seq2[j - 1]
+            and matrix[i][j] == matrix[i - 1][j - 1] + MISMATCH
+        ):
+
+            alignment_1.append(seq1[i - 1])
+            alignment_2.append(seq2[j - 1])
+
+            i -= 1
+            j -= 1
+
+        elif matrix[i][j] == matrix[i - 1][j] + GAP:
+
+            alignment_1.append(seq1[i - 1])
+            alignment_2.append("-")
+
+            i -= 1
+
+        else:
+
+            alignment_1.append("-")
+            alignment_2.append(seq2[j - 1])
+
+            j -= 1
+
+    while i > 0:
+
+        alignment_1.append(seq1[i - 1])
+        alignment_2.append("-")
+        i -= 1
+
+    while j > 0:
+
+        alignment_1.append("-")
+        alignment_2.append(seq2[j - 1])
+        j -= 1
+
+    alignment_1.reverse()
+    alignment_2.reverse()
+
+    return "".join(alignment_1), "".join(alignment_2)
+
+
+# ==========================
+# Output Functions
+# ==========================
+
+def print_matrix(matrix, seq1, seq2):
+
+    print("\nScoring Matrix\n")
+
+    print("     -", end="")
+
+    for ch in seq2:
+        print(f"{ch:>4}", end="")
+
+    print()
+
+    for i in range(len(matrix)):
+
+        if i == 0:
+            print("-", end=" ")
+        else:
+            print(seq1[i - 1], end=" ")
+
+        for value in matrix[i]:
+            print(f"{value:4}", end="")
+
+        print()
+
+
+def print_alignment(alignment1, alignment2):
+
+    print("\nGlobal Alignment\n")
+
+    print("Sequence 1 :", alignment1)
+    print("Sequence 2 :", alignment2)
+
+
+# ==========================
+# Main Function
+# ==========================
+
+def main():
+
+    seq1, seq2 = get_input()
+
+    if seq1 is None:
+        return
+
+    matrix = matrix_initialize(seq1, seq2)
+
+    matrix = fill_matrix(matrix, seq1, seq2)
+
+    alignment1, alignment2 = trace_back(matrix, seq1, seq2)
+
+    print_matrix(matrix, seq1, seq2)
+
+    print_alignment(alignment1, alignment2)
+
+
+if __name__ == "__main__":
+    main()
