@@ -1,0 +1,111 @@
+# Substitution Matrix
+
+## Definition
+
+A **substitution matrix** is a scoring table used in protein sequence alignment to assign a numerical score to the replacement of one amino acid by another.
+
+During sequence alignment, different amino-acid pairs are not treated as equally likely. Some substitutions occur frequently during evolution, while others are rare. A substitution matrix represents these biological differences through numerical scores.
+
+## Why is a Substitution Matrix Needed?
+
+In a simple alignment, we could use:
+
+* Match = positive score
+* Mismatch = negative score
+
+However, this is not biologically realistic for protein sequences. Amino acids have different chemical and structural properties. Replacing one amino acid with another having similar properties may be more acceptable than replacing it with a chemically very different amino acid.
+
+Therefore, substitution matrices provide **biologically meaningful scores** for amino-acid substitutions.
+
+## How Does It Work?
+
+A substitution matrix contains amino acids along both rows and columns.
+
+For example:
+
+```text
+       A   R   N   D
+A      4  -1  -2  -2
+R     -1   5   0  -2
+N     -2   0   6   1
+D     -2  -2   1   6
+```
+
+The value at the intersection of two amino acids represents the score for aligning those amino acids.
+
+For example:
+
+```text
+A vs A → +4
+A vs R → -1
+N vs D → +1
+```
+
+A positive score generally indicates that the substitution is relatively favorable, while a negative score indicates that the substitution is less favorable.
+
+## Role in Sequence Alignment
+
+Substitution matrices are used during the **dynamic programming calculation** of pairwise protein alignment.
+
+In algorithms such as:
+
+* Needleman-Wunsch
+* Smith-Waterman
+
+the substitution score is used for the **diagonal move** of the scoring matrix.
+
+Instead of simply using:
+
+```text
+Match = +1
+Mismatch = -1
+```
+
+the algorithm can obtain a specific score from a substitution matrix for each amino-acid pair.
+
+## Common Substitution Matrices
+
+Two major families of substitution matrices are:
+
+### PAM
+
+**Point Accepted Mutation** matrices are based on an evolutionary model of amino-acid substitutions.
+
+Examples:
+
+* PAM30
+* PAM70
+* PAM250
+
+### BLOSUM
+
+**BLOSUM** stands for **BLOcks SUbstitution Matrix**. These matrices are derived from conserved regions of protein sequences.
+
+Examples:
+
+* BLOSUM45
+* BLOSUM62
+* BLOSUM80
+
+PAM and BLOSUM are both widely used for protein sequence alignment, but they are constructed using different approaches.
+
+## Important Point
+
+A substitution matrix does **not** simply tell whether two amino acids are identical or different. It estimates how favorable or unfavorable their alignment is based on observed or modeled evolutionary substitutions.
+
+Therefore:
+
+**Substitution Matrix → Biological scoring of amino-acid substitutions → Better protein sequence alignment**
+
+## Applications
+
+Substitution matrices are used in:
+
+* Protein sequence alignment
+* Similarity searches
+* Homology detection
+* Evolutionary analysis
+* Database searching
+* Tools such as BLAST, EMBOSS Needle and EMBOSS Water
+
+The choice of substitution matrix can affect the resulting alignment score and, in some cases, the alignment itself.

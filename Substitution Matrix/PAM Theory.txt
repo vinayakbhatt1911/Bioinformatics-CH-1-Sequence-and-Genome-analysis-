@@ -1,0 +1,78 @@
+PAM (Point Accepted Mutation) Substitution Matrix
+
+PAM stands for Point Accepted Mutation. PAM matrices are substitution matrices used to score amino-acid substitutions during protein sequence alignment.
+
+Basic idea
+
+During evolution, one amino acid in a protein can be replaced by another. Some substitutions are more likely to be accepted without significantly affecting protein function, while others are much less likely.
+
+PAM matrices assign scores to these possible amino-acid substitutions based on their evolutionary probabilities.
+
+What does "PAM" mean?
+
+A PAM unit represents an evolutionary scale based on accepted amino-acid substitutions.
+
+PAM1 is defined using a model corresponding to approximately 1 accepted point mutation per 100 amino-acid positions, with the substitutions interpreted in an evolutionary model rather than as simply 1% of residues changing in one observed sequence.
+
+From the PAM1 model, matrices for larger evolutionary distances can be derived.
+
+Common PAM matrices
+Matrix	General use
+PAM30	Closely related proteins
+PAM70	Relatively closely related proteins
+PAM120	Intermediate evolutionary distance
+PAM250	More distantly related proteins
+
+The important rule is:
+
+Higher PAM number → greater evolutionary distance represented by the matrix.
+
+So PAM30 is generally appropriate for more closely related proteins, while PAM250 is designed for more divergent proteins.
+
+How does PAM score substitutions?
+
+A PAM matrix contains amino acids on both axes:
+
+       A   R   N   D
+A      4  -1  -2  -2
+R     -1   5   0  -2
+N     -2   0   6   1
+D     -2  -2   1   6
+
+The actual values depend on the specific PAM matrix.
+
+For example, if the matrix gives:
+
+A → A = positive score
+A → R = negative score
+
+then aligning A with A is favorable, while aligning A with R is less favorable.
+
+These scores are then used by alignment algorithms such as Needleman-Wunsch and Smith-Waterman when calculating the diagonal score.
+
+PAM vs simple match/mismatch
+
+Instead of:
+
+Same amino acid     → +1
+Different amino acid → -1
+
+PAM provides different scores for different substitutions.
+
+For example, replacing one amino acid with a chemically or evolutionarily similar amino acid may receive a less negative or even positive score, whereas an unlikely substitution receives a strongly negative score.
+
+Applications
+
+PAM matrices are used in:
+
+Protein sequence alignment
+Homology detection
+Evolutionary analysis
+Similarity searches
+Database searches
+
+Key takeaway:
+
+PAM matrices use an evolutionary model of accepted amino-acid substitutions to provide biologically informed scores for protein sequence alignment.
+
+Next, BLOSUM is the important comparison because its construction and numbering work differently from PAM.

@@ -1,0 +1,86 @@
+BLOSUM (BLOcks SUbstitution Matrix)
+
+BLOSUM stands for BLOcks SUbstitution Matrix. BLOSUM matrices are substitution matrices used to score amino-acid substitutions during protein sequence alignment.
+
+Basic Idea
+
+BLOSUM matrices are constructed from conserved regions, or blocks, of protein sequences. These blocks are regions where gaps are generally not allowed and where proteins show meaningful sequence conservation.
+
+The observed amino-acid substitutions within these blocks are used to calculate scores for different amino-acid pairs.
+
+Common BLOSUM Matrices
+Matrix	General use
+BLOSUM45	More divergent protein sequences
+BLOSUM62	General-purpose protein alignment
+BLOSUM80	More closely related protein sequences
+
+The important rule is:
+
+Higher BLOSUM number → generally more closely related sequences.
+
+So:
+
+BLOSUM80 → closer sequences
+BLOSUM62 → general purpose
+BLOSUM45 → more divergent sequences
+
+This is the opposite direction from PAM numbering.
+
+How BLOSUM Scores Substitutions
+
+A BLOSUM matrix contains amino acids on both axes:
+
+       A   R   N   D
+A      4  -1  -2  -2
+R     -1   5   0  -2
+N     -2   0   6   1
+D     -2  -2   1   6
+
+The actual values depend on which BLOSUM matrix is being used.
+
+For example, a positive value means that the particular amino-acid pairing is relatively favorable, while a negative value represents an unfavorable substitution.
+
+These scores are used by alignment algorithms to calculate the diagonal score when aligning protein sequences.
+
+How BLOSUM Is Different from Simple Match/Mismatch
+
+Instead of treating every different amino acid as identical:
+
+Match     = +1
+Mismatch  = -1
+
+BLOSUM gives different scores to different amino-acid substitutions based on their observed evolutionary behavior.
+
+Therefore, a substitution between two chemically or evolutionarily similar amino acids can receive a better score than a highly unlikely substitution.
+
+BLOSUM62
+
+BLOSUM62 is one of the most commonly used substitution matrices for general protein sequence alignment.
+
+It provides a useful balance between closely related and moderately divergent protein sequences and is widely used in sequence similarity searches and alignment tools.
+
+Applications
+
+BLOSUM matrices are used in:
+
+Protein sequence alignment
+Local and global alignment
+Homology detection
+Similarity searches
+BLAST
+EMBOSS Needle
+EMBOSS Water
+Evolutionary analysis
+PAM vs BLOSUM: Key Difference
+
+The main conceptual difference is their construction:
+
+PAM
+→ Based on an evolutionary model of accepted amino-acid mutations.
+
+BLOSUM
+→ Derived from observed substitutions in conserved protein blocks.
+
+Key takeaway
+
+BLOSUM matrices provide biologically informed substitution scores derived from conserved protein sequence blocks, with lower-numbered matrices generally suited to more divergent sequences and higher-numbered matrices to more closely related sequences.
