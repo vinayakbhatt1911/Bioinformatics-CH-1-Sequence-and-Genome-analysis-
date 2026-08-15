@@ -1,0 +1,85 @@
+# EMBOSS Needle and EMBOSS Water
+
+## 1. EMBOSS Needle
+
+EMBOSS Needle is a sequence alignment tool used to perform **global pairwise sequence alignment**. It is based on the **Needleman-Wunsch algorithm**.
+
+Global alignment attempts to align the sequences across their **entire length**. Gaps can be introduced when necessary to obtain the best overall alignment.
+
+For each possible alignment, a score is calculated using a scoring system such as:
+
+* Match score
+* Mismatch penalty
+* Gap penalty
+* For protein sequences, substitution matrices such as PAM or BLOSUM can be used.
+
+The algorithm uses **dynamic programming** to construct a scoring matrix. After filling the matrix, traceback starts from the **bottom-right cell** and continues until the beginning of the sequences is reached.
+
+### Important characteristics
+
+* Performs global alignment.
+* Aligns the complete sequences.
+* Uses dynamic programming.
+* Traceback starts from the bottom-right cell.
+* Useful when two sequences are expected to be similar over their complete lengths.
+
+### Example
+
+Human HBB and Chimpanzee HBB sequences can be aligned using EMBOSS Needle to determine their overall sequence similarity.
+
+---
+
+## 2. EMBOSS Water
+
+EMBOSS Water is a sequence alignment tool used to perform **local pairwise sequence alignment**. It is based on the **Smith-Waterman algorithm**.
+
+Unlike global alignment, local alignment searches for the **best matching region** between two sequences rather than forcing the entire sequences to align.
+
+The scoring matrix is initialized with zero values. During matrix filling, the score of each cell is calculated from possible diagonal, up and left movements, along with zero:
+
+`max(0, diagonal, up, left)`
+
+The inclusion of zero allows the algorithm to discard regions with poor alignment scores and start a new alignment from a better-scoring region.
+
+After the matrix is filled, traceback starts from the **highest-scoring cell** and continues until a cell with score **0** is reached.
+
+### Important characteristics
+
+* Performs local alignment.
+* Finds the highest-scoring similar region.
+* Uses dynamic programming.
+* Matrix contains zero values.
+* Traceback starts from the highest-scoring cell.
+* Traceback stops when the score becomes zero.
+* Useful when two sequences may contain only a particular region of high similarity.
+
+### EMBOSS Needle vs EMBOSS Water
+
+| Feature               | EMBOSS Needle               | EMBOSS Water           |
+| --------------------- | --------------------------- | ---------------------- |
+| Alignment type        | Global                      | Local                  |
+| Algorithm             | Needleman-Wunsch            | Smith-Waterman         |
+| Starting point        | Bottom-right cell           | Highest-scoring cell   |
+| Stopping point        | Beginning/boundary          | Score = 0              |
+| Main purpose          | Overall sequence similarity | Best matching region   |
+| Matrix initialization | Gap-related scores          | Zero                   |
+| Alignment coverage    | Entire sequences            | Highest-scoring region |
+
+### Connection with Python Implementations
+
+The EMBOSS tools are practical implementations of the same concepts that can be implemented manually in Python.
+
+* **Needle → Needleman-Wunsch → Global Alignment**
+* **Water → Smith-Waterman → Local Alignment**
+
+The main difference is that real tools provide additional scoring options, substitution matrices and detailed alignment statistics, making them more suitable for biological sequence analysis.
+## Official Tools
+
+EMBOSS Needle:
+https://www.ebi.ac.uk/jdispatcher/psa/emboss_needle
+
+EMBOSS Water:
+https://www.ebi.ac.uk/jdispatcher/psa/emboss_water
+
+EMBOSS Tools:
+https://www.ebi.ac.uk/jdispatcher/emboss
